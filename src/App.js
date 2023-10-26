@@ -1,23 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import Auth from "./components/authorization-section/Auth";
+import MainHeader from "./components/header-section/MainHeader";
+import MainIndex from "./components/main-section/MainIndex";
+import NavigationBar from "./components/navigation-section/NavigationBar";
+import React, { useState, useEffect } from "react";
 
 function App() {
+  const [token, setToken] = useState("");
+
+  function updateToken(newToken) {
+    setToken(newToken);
+    localStorage.setItem("token", newToken);
+  }
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      setToken(token);
+    }
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <MainHeader />
+      <NavigationBar />
+      {token ? <MainIndex /> : <Auth updateToken={updateToken} />}
     </div>
   );
 }
